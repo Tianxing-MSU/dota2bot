@@ -122,11 +122,11 @@ local bBuffFlags = {
         radiant = true, -- Set to 'false' to disable aiding Radiant bots' receiving added mana regen.
         dire    = true, -- Set to 'false' to disable aiding Dire bots' receiving added mana regen.
     },
-    -- Applies to All Pick only
     gpm = {
         radiant = true, -- Set to 'false' to disable Radiant bots receiving a Gold boost.
         dire    = true, -- Set to 'false' to disable Dire bots receiving a Gold boost.
     },
+    -- Applies to All Pick only
     xpm = {
         radiant = true, -- Set to 'false' to disable Radiant bots receiving an Experience boost.
         dire    = true, -- Set to 'false' to disable Dire bots receiving an Experience boost.
@@ -226,20 +226,26 @@ function Buff:Init()
             NeutralItems.GiveNeutralItems(hHeroList)
 
             -- Gold and Experience
+            for _, h in pairs(TeamRadiant) do
+                if bBuffFlags.gpm.radiant then
+                    GPM.UpdateBotGold(h, TeamRadiant)
+                end
+            end
+
+            for _, h in pairs(TeamDire) do
+                if bBuffFlags.gpm.dire then
+                    GPM.UpdateBotGold(h, TeamDire)
+                end
+            end
+
             if not Helper.IsTurboMode() then
                 for _, h in pairs(TeamRadiant) do
-                    if bBuffFlags.gpm.radiant then
-                        GPM.UpdateBotGold(h, TeamRadiant)
-                    end
                     if bBuffFlags.xpm.radiant then
                         XP.UpdateXP(h, TeamRadiant)
                     end
                 end
 
                 for _, h in pairs(TeamDire) do
-                    if bBuffFlags.gpm.dire then
-                        GPM.UpdateBotGold(h, TeamDire)
-                    end
                     if bBuffFlags.xpm.dire then
                         XP.UpdateXP(h, TeamDire)
                     end
